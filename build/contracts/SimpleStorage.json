@@ -30,11 +30,11 @@
       "type": "function"
     }
   ],
-  "bytecode": "0x6060604052341561000f57600080fd5b60d38061001d6000396000f3006060604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c14606e575b600080fd5b3415605857600080fd5b606c60048080359060200190919050506094565b005b3415607857600080fd5b607e609e565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a723058207c54fd868fd4392970ae5275b98c4703aa0ba14bdfb635a0b1f53ac2be2f24480029",
-  "deployedBytecode": "0x6060604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c14606e575b600080fd5b3415605857600080fd5b606c60048080359060200190919050506094565b005b3415607857600080fd5b607e609e565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a723058207c54fd868fd4392970ae5275b98c4703aa0ba14bdfb635a0b1f53ac2be2f24480029",
-  "sourceMap": "26:194:1:-;;;;;;;;;;;;;;;;;",
-  "deployedSourceMap": "26:194:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;77:59;;;;;;;;;;;;;;;;;;;;;;;;;;142:76;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;77:59;128:1;115:10;:14;;;;77:59;:::o;142:76::-;178:4;201:10;;194:17;;142:76;:::o",
-  "source": "pragma solidity ^0.4.18;\n\ncontract SimpleStorage {\n    uint storedData;\n\n    function set(uint x) public {\n        storedData = x;\n    }\n\n    function get() public view returns (uint) {\n        return storedData;\n    }\n}\n",
+  "bytecode": "0x6060604052341561000f57600080fd5b60d38061001d6000396000f3006060604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c14606e575b600080fd5b3415605857600080fd5b606c60048080359060200190919050506094565b005b3415607857600080fd5b607e609e565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a72305820edd1d88d2e4551d9af14da41d62948fd022dfbe515a3cfc61f599730bb2b99e50029",
+  "deployedBytecode": "0x6060604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c14606e575b600080fd5b3415605857600080fd5b606c60048080359060200190919050506094565b005b3415607857600080fd5b607e609e565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a72305820edd1d88d2e4551d9af14da41d62948fd022dfbe515a3cfc61f599730bb2b99e50029",
+  "sourceMap": "28:204:1:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "28:204:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;82:61;;;;;;;;;;;;;;;;;;;;;;;;;;151:78;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;82:61;134:1;121:10;:14;;;;82:61;:::o;151:78::-;187:4;211:10;;204:17;;151:78;:::o",
+  "source": "pragma solidity ^0.4.18;\r\n\r\ncontract SimpleStorage {\r\n    uint storedData;\r\n\r\n    function set(uint x) public {\r\n        storedData = x;\r\n    }\r\n\r\n    function get() public view returns (uint) {\r\n        return storedData;\r\n    }\r\n}\r\n",
   "sourcePath": "C:\\BlockChain\\bitcoin_rate_in_a_week\\contracts\\SimpleStorage.sol",
   "ast": {
     "attributes": {
@@ -96,12 +96,12 @@
                 },
                 "id": 59,
                 "name": "ElementaryTypeName",
-                "src": "55:4:1"
+                "src": "58:4:1"
               }
             ],
             "id": 60,
             "name": "VariableDeclaration",
-            "src": "55:15:1"
+            "src": "58:15:1"
           },
           {
             "attributes": {
@@ -140,17 +140,17 @@
                         },
                         "id": 61,
                         "name": "ElementaryTypeName",
-                        "src": "90:4:1"
+                        "src": "95:4:1"
                       }
                     ],
                     "id": 62,
                     "name": "VariableDeclaration",
-                    "src": "90:6:1"
+                    "src": "95:6:1"
                   }
                 ],
                 "id": 63,
                 "name": "ParameterList",
-                "src": "89:8:1"
+                "src": "94:8:1"
               },
               {
                 "attributes": {
@@ -161,7 +161,7 @@
                 "children": [],
                 "id": 64,
                 "name": "ParameterList",
-                "src": "105:0:1"
+                "src": "110:0:1"
               },
               {
                 "children": [
@@ -190,7 +190,7 @@
                             },
                             "id": 65,
                             "name": "Identifier",
-                            "src": "115:10:1"
+                            "src": "121:10:1"
                           },
                           {
                             "attributes": {
@@ -204,27 +204,27 @@
                             },
                             "id": 66,
                             "name": "Identifier",
-                            "src": "128:1:1"
+                            "src": "134:1:1"
                           }
                         ],
                         "id": 67,
                         "name": "Assignment",
-                        "src": "115:14:1"
+                        "src": "121:14:1"
                       }
                     ],
                     "id": 68,
                     "name": "ExpressionStatement",
-                    "src": "115:14:1"
+                    "src": "121:14:1"
                   }
                 ],
                 "id": 69,
                 "name": "Block",
-                "src": "105:31:1"
+                "src": "110:33:1"
               }
             ],
             "id": 70,
             "name": "FunctionDefinition",
-            "src": "77:59:1"
+            "src": "82:61:1"
           },
           {
             "attributes": {
@@ -251,7 +251,7 @@
                 "children": [],
                 "id": 71,
                 "name": "ParameterList",
-                "src": "154:2:1"
+                "src": "163:2:1"
               },
               {
                 "children": [
@@ -274,17 +274,17 @@
                         },
                         "id": 72,
                         "name": "ElementaryTypeName",
-                        "src": "178:4:1"
+                        "src": "187:4:1"
                       }
                     ],
                     "id": 73,
                     "name": "VariableDeclaration",
-                    "src": "178:4:1"
+                    "src": "187:4:1"
                   }
                 ],
                 "id": 74,
                 "name": "ParameterList",
-                "src": "177:6:1"
+                "src": "186:6:1"
               },
               {
                 "children": [
@@ -305,49 +305,38 @@
                         },
                         "id": 75,
                         "name": "Identifier",
-                        "src": "201:10:1"
+                        "src": "211:10:1"
                       }
                     ],
                     "id": 76,
                     "name": "Return",
-                    "src": "194:17:1"
+                    "src": "204:17:1"
                   }
                 ],
                 "id": 77,
                 "name": "Block",
-                "src": "184:34:1"
+                "src": "193:36:1"
               }
             ],
             "id": 78,
             "name": "FunctionDefinition",
-            "src": "142:76:1"
+            "src": "151:78:1"
           }
         ],
         "id": 79,
         "name": "ContractDefinition",
-        "src": "26:194:1"
+        "src": "28:204:1"
       }
     ],
     "id": 80,
     "name": "SourceUnit",
-    "src": "0:221:1"
+    "src": "0:234:1"
   },
   "compiler": {
     "name": "solc",
     "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
   },
-  "networks": {
-    "3": {
-      "events": {},
-      "links": {},
-      "address": "0xa0202b44d62b48376e551a96b061214463c5b795"
-    },
-    "4447": {
-      "events": {},
-      "links": {},
-      "address": "0x345ca3e014aaf5dca488057592ee47305d9b3e10"
-    }
-  },
+  "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-09T09:32:46.780Z"
+  "updatedAt": "2017-12-09T10:07:53.060Z"
 }

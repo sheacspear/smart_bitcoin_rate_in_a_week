@@ -1,2 +1,2 @@
 export ACCOUNT_PASSWORD=superalex
-truffle migrate
+truffle migrate --network test
