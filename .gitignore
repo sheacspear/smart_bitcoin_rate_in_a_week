@@ -1,0 +1,14 @@
+syntax: glob
+
+target
+.idea
+*.iml
+distribute
+.classpath
+.settings
+.project
+testdb
+dist
+node_modules
+bower_components
+tmp-6500Ivb0oIb3pmI7
