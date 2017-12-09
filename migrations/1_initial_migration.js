@@ -18,5 +18,5 @@ module.exports = function (deployer, network, addresses) {
         }
         console.log('>> Deploying migration');
     }
-    deployer.deploy(Migrations, {gas: 3000000});
+    deployer.deploy(Migrations, {gas: 500000});
 };
