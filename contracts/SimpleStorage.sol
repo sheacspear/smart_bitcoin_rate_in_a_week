@@ -1,6 +1,8 @@
 pragma solidity ^0.4.18;
 
-contract SimpleStorage {
+import "./Owner.sol";
+
+contract SimpleStorage is Owner {
     uint storedData;
 
     function set(uint x) public {
