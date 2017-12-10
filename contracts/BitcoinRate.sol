@@ -47,9 +47,11 @@ contract BitcoinRate is Owner, usingOraclize {
     }
 
     function getAllSubscribers() public {
-        newBTCPrice("test1", "test2");
+        //newBTCPrice("test1", "test2");
         for (uint i = 0; i <= subscribers.length; i++) {
-            newBTCPrice(subscribers[i], currentPriceBitcoin);
+            newOraclizeQuery(subscribers[i]);
+            //newBTCPrice(subscribers[i], currentPriceBitcoin);
+
         }
     }
 
@@ -59,18 +61,14 @@ contract BitcoinRate is Owner, usingOraclize {
         } else {
             newOraclizeQuery("Oraclize query was sent, standing by for the answer..");
             //60
-            bytes32 queryId = oraclize_query( "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
+            bytes32 queryId = oraclize_query(60, "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
             validIds[queryId] = true;
         }
     }
 
-    function __callback(bytes32 myid, string result) public {
-        newOraclizeQuery("callback");
-        newOraclizeQuery(result);
-        newBitcoinPrice(result);
+    function __callback(bytes32 myid, string result, bytes proof) public {
         require(validIds[myid]);
         require(msg.sender == oraclize_cbAddress());
-        newOraclizeQuery(result);
         if (biggest(result, currentPriceBitcoin)) {
             currentPriceBitcoin = result;
             newBitcoinPrice(result);

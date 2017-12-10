@@ -1,11 +1,15 @@
-# smart_bitcoin_rate_in_a_week
-smart_bitcoin_rate_in_a_week
+# Smart Contract Bitcoin Rate in a Week
+
 
 ## Installation
 
 1. Install Truffle globally.
     ```javascript
     npm install -g truffle
+ 
+2. Install npm modules
+     ```javascript
+     npm install
 
 2. Deploy contract
     ```javascript

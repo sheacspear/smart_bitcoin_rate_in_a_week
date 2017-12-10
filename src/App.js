@@ -73,7 +73,7 @@ class App extends Component {
                         console.log('newBitcoinPrice');
                         console.log(result);
                         console.log(error);
-                        console.log(result.args.msg);
+                        console.log(result.args.price);
                     });
                     this.state.instance.newOraclizeQuery((error, result) => {
                         console.log('newOraclizeQuery');
