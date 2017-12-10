@@ -5,13 +5,12 @@ import "./usingOraclize.sol";
 
 contract BitcoinRate is Owner, usingOraclize {
 
-    struct Subscriber {
-        string email;
-    }
 
-    mapping(address => Subscriber) subscribers;
+    mapping(address => string) subscribers;
 
     string currentPriceBitcoin;
+
+    ufixed test;
 
     mapping(bytes32 => bool) validIds;
 
@@ -20,6 +19,9 @@ contract BitcoinRate is Owner, usingOraclize {
 
     event newOraclizeQuery(string msg);
 
+    event newBTCPrice(string msg, string email);
+
+
     function BitcoinRate() {
         //oraclize_setProof(proofType_Ledger);
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
@@ -27,12 +29,16 @@ contract BitcoinRate is Owner, usingOraclize {
     }
 
     function registerNewSubscriber(string email) public {
-        subscribers[msg.sender].email = email;
+        subscribers[msg.sender] = email;
     }
 
 
     function getBalance() public view returns (uint){
         return this.balance;
+    }
+
+    function getBTC() public view returns (string){
+        return currentPriceBitcoin;
     }
 
     function updatePrice() public payable {

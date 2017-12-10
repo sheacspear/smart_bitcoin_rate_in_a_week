@@ -13,6 +13,7 @@ class App extends Component {
 
         this.state = {
             balance: 0,
+            btc: 0,
             web3: null,
             contract: null,
             instance: null
@@ -24,12 +25,13 @@ class App extends Component {
         // See utils/getWeb3 for more info.
         getWeb3.then(results => {
             this.setState({
-                web3: results.web3
+                web3: results.web3,
+                btc: this.state.btc
             });
             this.instantiateContract()
         }).catch((e) => {
             console.log('Error finding web3.')
-            // console.log(e)
+            console.log(e)
         })
     }
 
@@ -48,38 +50,72 @@ class App extends Component {
         let bitcoinRateInstance;
         // Get accounts.
         this.state.web3.eth.getAccounts((error, accounts) => {
-            bitcoinRate.defaults({
-                from: accounts[0]
-            });
-            this.setState(
-                {
-                    web3: this.state.web3,
-                    contract: bitcoinRate,
+                bitcoinRate.defaults({
+                    from: accounts[0]
                 });
-            bitcoinRate.deployed().then((instance) => {
-                bitcoinRateInstance = instance;
-                this.setState({
-                    instance: bitcoinRateInstance,
-                    web3: this.state.web3,
-                    contract: this.state.contract
-                });
-                // Stores a given value, 5 by default.
-                return instance;
-            }).then((instance) => {
-                // Get the value from the contract to prove it worked.
-                return bitcoinRateInstance.getBalance.call(accounts[0])
-            }).then((result) => {
-                // Update state with the result.
-                return this.setState({
-                    balance: result.c[0],
-                    instance: this.state.instance,
-                    web3: this.state.web3,
-                    contract: this.state.contract
+                this.setState(
+                    {
+                        web3: this.state.web3,
+                        contract: bitcoinRate,
+                        btc: this.state.btc
+                    });
+                bitcoinRate.deployed().then((instance) => {
+                    bitcoinRateInstance = instance;
+                    this.setState({
+                        instance: bitcoinRateInstance,
+                        web3: this.state.web3,
+                        contract: this.state.contract,
+                        btc: this.state.btc
+                    });
+                }).then(() => {
 
+                    this.state.instance.newBitcoinPrice((error, result) => {
+                        console.log('newBitcoinPrice');
+                        console.log(result);
+                        console.log(error);
+                        console.log(result.args.msg);
+                    });
+                    this.state.instance.newOraclizeQuery((error, result) => {
+                        console.log('newOraclizeQuery');
+                        console.log(result);
+                        console.log(error);
+                        console.log(result.args.msg);
+                    });
+
+                }).then((instance) => {
+                    // Get the value from the contract to prove it worked.
+                    bitcoinRateInstance.getBalance().then((result) => {
+                        // Update state with the result.
+                        return this.setState({
+                            balance: result.c[0],
+                            instance: this.state.instance,
+                            web3: this.state.web3,
+                            contract: this.state.contract,
+                            btc: this.state.btc
+                        })
+                    });
+
+                    // Get the value from the contract to prove it worked.
+                    bitcoinRateInstance.getBTC().then((result) => {
+                        // Update state with the result.
+                        return this.setState({
+                            balance: this.state.balance,
+                            instance: this.state.instance,
+                            web3: this.state.web3,
+                            contract: this.state.contract,
+                            btc: result.c[0],
+                        })
+                    });
                 })
-            })
-        })
+            }
+        )
     }
+
+    registerUser() {
+        //
+        this.state.instance.registerNewSubscriber('sheacspear@gmail.com')
+    }
+
 
     sendEth() {
         this.state.instance.send(this.state.web3.toWei(40000000, "gwei")).then(function (result) {
@@ -88,22 +124,33 @@ class App extends Component {
         });
     }
 
+    updatePrice() {
+        this.state.instance.updatePrice()
+    }
+
+    getSubscribers() {
+        this.state.instance.getSubscribers().then((result) => {
+            console.log(result);
+        })
+    }
+
     render() {
         return (
             <div className="App">
                 <nav className="navbar pure-menu pure-menu-horizontal">
-                    <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
+                    <h1>Bitcoin rate in a week</h1>
                 </nav>
                 <main className="container">
                     <div className="pure-g">
                         <div className="pure-u-1-1">
-                            <h1>Bitcoin rate in a week</h1>
-                            <p>Current price BTC:</p>
-                            <h2>Smart Contract Example</h2>
-                            <p>If your contracts compiled and migrated successfully, below will show a stored value of 5
-                                (by default).</p>
+                            <p>Test Smart Contract </p>
+                            <p>Current price BTC: {this.state.btc}</p>
                             <p>Balance is: {this.state.balance}</p>
                             <button onClick={() => this.sendEth()}> Send money for contract</button>
+                            <br/>
+                            <button onClick={() => this.registerUser()}> Register New User</button>
+                            <br/>
+                            <button onClick={() => this.updatePrice()}> Update price</button>
                         </div>
                     </div>
                 </main>
