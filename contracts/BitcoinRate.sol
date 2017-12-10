@@ -7,7 +7,7 @@ contract BitcoinRate is Owner, usingOraclize {
 
     string[] subscribers;
 
-    string currentPriceBitcoin = "";
+    string currentPriceBitcoin = "0";
 
     ufixed test;
 
@@ -34,13 +34,8 @@ contract BitcoinRate is Owner, usingOraclize {
         //updatePrice();
     }
 
-    function registerNewSubscriber(string email) public {
+    function registerNewSubscriber(string email) public payable{
         subscribers.push(email);
-    }
-
-
-    function contribute() public payable {
-        newOraclizeQuery("new balance");
     }
 
     function getBalance() public view returns (uint){
@@ -63,12 +58,14 @@ contract BitcoinRate is Owner, usingOraclize {
             newOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
         } else {
             newOraclizeQuery("Oraclize query was sent, standing by for the answer..");
-            bytes32 queryId = oraclize_query(60, "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
+            //60
+            bytes32 queryId = oraclize_query( "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
             validIds[queryId] = true;
         }
     }
 
     function __callback(bytes32 myid, string result) public {
+        newOraclizeQuery("callback");
         newOraclizeQuery(result);
         newBitcoinPrice(result);
         require(validIds[myid]);
