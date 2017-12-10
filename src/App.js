@@ -125,9 +125,9 @@ class App extends Component {
 
 
     sendEth() {
-   // .contribute.sendTransaction({from : eth.coinbase , value : 5000
+        // .contribute.sendTransaction({from : eth.coinbase , value : 5000
 
-        this.state.instance.contribute.sendTransaction({value : this.state.web3.toWei(1, "ether")}).then(function (result) {
+        this.state.instance.contribute.sendTransaction({value: this.state.web3.toWei(0.01, "ether")}).then(function (result) {
             // Same result object as above.
             console.log(result);
         });

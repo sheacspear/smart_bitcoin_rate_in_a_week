@@ -13,12 +13,12 @@ contract BitcoinRate is Owner, usingOraclize {
 
     mapping(bytes32 => bool) validIds;
     //Fallback Function
-    //A contract can have exactly one unnamed function. 
+    //A contract can have exactly one unnamed function.
     //This function cannot have arguments and cannot return anything.
     //It is executed on a call to the contract if none of the other functions match the given function identifier (or if no data was supplied at all).
 
     function() payable {
-
+        newOraclizeQuery("new balance");
     }
 
     event newBitcoinPrice(string price);
@@ -31,7 +31,7 @@ contract BitcoinRate is Owner, usingOraclize {
     function BitcoinRate() {
         //oraclize_setProof(proofType_Ledger);
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
-        updatePrice();
+        //updatePrice();
     }
 
     function registerNewSubscriber(string email) public {
@@ -63,20 +63,23 @@ contract BitcoinRate is Owner, usingOraclize {
             newOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
         } else {
             newOraclizeQuery("Oraclize query was sent, standing by for the answer..");
-            bytes32 queryId = oraclize_query(60, "URL", "https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
+            bytes32 queryId = oraclize_query(60, "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
             validIds[queryId] = true;
         }
     }
 
     function __callback(bytes32 myid, string result) public {
+        newOraclizeQuery(result);
+        newBitcoinPrice(result);
         require(validIds[myid]);
         require(msg.sender == oraclize_cbAddress());
+        newOraclizeQuery(result);
         if (biggest(result, currentPriceBitcoin)) {
             currentPriceBitcoin = result;
             newBitcoinPrice(result);
         }
         delete validIds[myid];
-        updatePrice();
+        //updatePrice();
     }
 
     function biggest(string result1, string result2) public returns (bool biggest) {
