@@ -28,7 +28,11 @@ contract BitcoinRate is Owner, usingOraclize {
 
     function registerNewSubscriber(string email) public {
         subscribers[msg.sender].email = email;
+    }
 
+
+    function getBalance() public view returns (uint){
+        return this.balance;
     }
 
     function updatePrice() public payable {
