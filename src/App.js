@@ -82,6 +82,13 @@ class App extends Component {
                         console.log(result.args.msg);
                     });
 
+                    this.state.instance.newBTCPrice((error, result) => {
+                        console.log('newBTCPrice');
+                        console.log(result);
+                        console.log(error);
+                        console.log(result.args.msg);
+                    });
+
                 }).then((instance) => {
                     // Get the value from the contract to prove it worked.
                     bitcoinRateInstance.getBalance().then((result) => {
@@ -103,7 +110,7 @@ class App extends Component {
                             instance: this.state.instance,
                             web3: this.state.web3,
                             contract: this.state.contract,
-                            btc: result.c[0],
+                            btc: result,
                         })
                     });
                 })
@@ -118,7 +125,9 @@ class App extends Component {
 
 
     sendEth() {
-        this.state.instance.send(this.state.web3.toWei(40000000, "gwei")).then(function (result) {
+   // .contribute.sendTransaction({from : eth.coinbase , value : 5000
+
+        this.state.instance.contribute.sendTransaction({value : this.state.web3.toWei(1, "ether")}).then(function (result) {
             // Same result object as above.
             console.log(result);
         });
@@ -129,7 +138,7 @@ class App extends Component {
     }
 
     getSubscribers() {
-        this.state.instance.getSubscribers().then((result) => {
+        this.state.instance.getAllSubscribers().then((result) => {
             console.log(result);
         })
     }
@@ -151,6 +160,8 @@ class App extends Component {
                             <button onClick={() => this.registerUser()}> Register New User</button>
                             <br/>
                             <button onClick={() => this.updatePrice()}> Update price</button>
+                            <br/>
+                            <button onClick={() => this.getSubscribers()}> Get all Subscribers</button>
                         </div>
                     </div>
                 </main>

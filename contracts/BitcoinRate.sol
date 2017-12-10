@@ -5,15 +5,21 @@ import "./usingOraclize.sol";
 
 contract BitcoinRate is Owner, usingOraclize {
 
+    string[] subscribers;
 
-    mapping(address => string) subscribers;
-
-    string currentPriceBitcoin;
+    string currentPriceBitcoin = "";
 
     ufixed test;
 
     mapping(bytes32 => bool) validIds;
+    //Fallback Function
+    //A contract can have exactly one unnamed function. 
+    //This function cannot have arguments and cannot return anything.
+    //It is executed on a call to the contract if none of the other functions match the given function identifier (or if no data was supplied at all).
 
+    function() payable {
+
+    }
 
     event newBitcoinPrice(string price);
 
@@ -29,9 +35,13 @@ contract BitcoinRate is Owner, usingOraclize {
     }
 
     function registerNewSubscriber(string email) public {
-        subscribers[msg.sender] = email;
+        subscribers.push(email);
     }
 
+
+    function contribute() public payable {
+        newOraclizeQuery("new balance");
+    }
 
     function getBalance() public view returns (uint){
         return this.balance;
@@ -39,6 +49,13 @@ contract BitcoinRate is Owner, usingOraclize {
 
     function getBTC() public view returns (string){
         return currentPriceBitcoin;
+    }
+
+    function getAllSubscribers() public {
+        newBTCPrice("test1", "test2");
+        for (uint i = 0; i <= subscribers.length; i++) {
+            newBTCPrice(subscribers[i], currentPriceBitcoin);
+        }
     }
 
     function updatePrice() public payable {
@@ -54,7 +71,7 @@ contract BitcoinRate is Owner, usingOraclize {
     function __callback(bytes32 myid, string result) public {
         require(validIds[myid]);
         require(msg.sender == oraclize_cbAddress());
-        if (compare(result, currentPriceBitcoin)) {
+        if (biggest(result, currentPriceBitcoin)) {
             currentPriceBitcoin = result;
             newBitcoinPrice(result);
         }
@@ -62,7 +79,7 @@ contract BitcoinRate is Owner, usingOraclize {
         updatePrice();
     }
 
-    function compare(string result1, string result2) public returns (bool biggest) {
+    function biggest(string result1, string result2) public returns (bool biggest) {
         return true;
     }
 
