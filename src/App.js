@@ -7,6 +7,12 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
+/**
+ * App for Smart contract
+ *
+ * Subscribe for BTC price, update even every week.
+ * User Oracle by Oraclize for get BTC price.
+ */
 class App extends Component {
     constructor(props) {
         super(props)
@@ -69,26 +75,60 @@ class App extends Component {
                     });
                 }).then(() => {
 
+                   // this.state.instance.log((error, result) => {
+                      //  console.log('log');
+                      //  console.log(result);
+                      //  console.log(error);
+                       // console.log(result.args);
+                  //  });
+
                     this.state.instance.newBitcoinPrice((error, result) => {
                         console.log('newBitcoinPrice');
                         console.log(result);
                         console.log(error);
                         console.log(result.args.price);
                     });
+
+                    this.state.instance.newBitcoinPriceLess((error, result) => {
+                        console.log('newBitcoinPriceLess');
+                        console.log(result);
+                        console.log(error);
+                        console.log('Меньше чем раньше, новая цена:');
+                        console.log(result.args.price.c[0]);
+
+                    });
+
+                    this.state.instance.newBitcoinPriceEquals((error, result) => {
+                        //console.log('newBitcoinPriceEquals');
+                        //console.log(result);
+                        //console.log(error);
+                        console.log('Вы везунчик, цена не изменилась: ');
+                        console.log(result.args.price.c[0]);
+
+                    });
+
+                    this.state.instance.newBitcoinPriceMore((error, result) => {
+                        console.log('newBitcoinPriceMore');
+                        //console.log(result);
+                        //console.log(error);
+                        console.log('Больше чем раньше, новая цена: ');
+                        console.log(result.args.price.c[0]);
+                    });
+
                     this.state.instance.newOraclizeQuery((error, result) => {
-                        console.log('newOraclizeQuery');
-                        console.log(result);
-                        console.log(error);
+                        //console.log('newOraclizeQuery');
+                        //console.log(result);
+                        //console.log(error);
                         console.log(result.args.msg);
                     });
 
-                    this.state.instance.newBTCPrice((error, result) => {
+                    this.state.instance.newBTCPrice((error, result, zz) => {
                         console.log('newBTCPrice');
-                        console.log(result);
-                        console.log(error);
+                        //console.log(result);
+                        //console.log(error);
                         console.log(result.args.msg);
+                        console.log(result.args.cost.c[0]);
                     });
-
                 }).then((instance) => {
                     // Get the value from the contract to prove it worked.
                     bitcoinRateInstance.getBalance().then((result) => {
@@ -110,7 +150,7 @@ class App extends Component {
                             instance: this.state.instance,
                             web3: this.state.web3,
                             contract: this.state.contract,
-                            btc: result,
+                            btc: result.c[0],
                         })
                     });
                 })
@@ -118,29 +158,23 @@ class App extends Component {
         )
     }
 
+    /**
+     *  Register New User and send yours money
+     */
     registerUser() {
-        //
-        this.state.instance.registerNewSubscriber('sheacspear@gmail.com')
-    }
-
-
-    sendEth() {
-        // .contribute.sendTransaction({from : eth.coinbase , value : 5000
-
-        this.state.instance.registerNewSubscriber.sendTransaction('sheacspear@gmail.com',{value: this.state.web3.toWei(0.01, "ether")}).then(function (result) {
+        console.log('registerNewSubscriber: ' + this.textInput.value)
+        this.state.instance.registerNewSubscriber.sendTransaction(this.textInput.value, {value: this.state.web3.toWei(0.01, "ether")}).then(function (result) {
             // Same result object as above.
             console.log(result);
         });
     }
 
-    updatePrice() {
-        this.state.instance.updatePrice()
+    getSubscribers() {
+        this.state.instance.getAllSubscribers();
     }
 
-    getSubscribers() {
-        this.state.instance.getAllSubscribers().then((result) => {
-            console.log(result);
-        })
+    updatePrice() {
+        this.state.instance.updatePrice();
     }
 
     render() {
@@ -155,11 +189,12 @@ class App extends Component {
                             <p>Test Smart Contract </p>
                             <p>Current price BTC: {this.state.btc}</p>
                             <p>Balance is: {this.state.balance}</p>
-                            <button onClick={() => this.sendEth()}> Send money for contract</button>
+                            <button onClick={() => this.registerUser()}> Register New User and send yours money</button>
+                            <input type="text" name="e-mail" ref={(input) => {
+                                this.textInput = input;
+                            }}/>
                             <br/>
-                            <button onClick={() => this.registerUser()}> Register New User</button>
-                            <br/>
-                            <button onClick={() => this.updatePrice()}> Update price</button>
+                            <button onClick={() => this.updatePrice()}>Start update price</button>
                             <br/>
                             <button onClick={() => this.getSubscribers()}> Get all Subscribers</button>
                         </div>

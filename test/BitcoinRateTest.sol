@@ -7,13 +7,15 @@ import "../contracts/BitcoinRate.sol";
 contract TestBitcoinRate {
 
   function testItStoresAValue() public {
-    BitcoinRate bitcoinRate = SimpleStorage(DeployedAddresses.BitcoinRate());
+    BitcoinRate bitcoinRate = BitcoinRate(DeployedAddresses.BitcoinRate());
 
-    bitcoinRate.set(89);
+    bitcoinRate.registerNewSubscriber('test@lol');
 
-    uint expected = 89;
+    bitcoinRate.getAllSubscribers();
 
-    Assert.equal(bitcoinRate.get(), expected, "It should store the value 89.");
+
+
+    Assert.equal(bitcoinRate.subscribers[0], 'test@lol', "It should store the value 89.");
   }
 
 }

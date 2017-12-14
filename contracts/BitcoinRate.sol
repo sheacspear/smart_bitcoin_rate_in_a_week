@@ -9,33 +9,42 @@ import "./usingOraclize.sol";
 contract BitcoinRate is Owner, usingOraclize {
 
     //Subscribe
-    string[] subscribers;
+    string[] private subscribers;
 
-    //Last BTC price
-    uint currentPriceBitcoin = 0;
+    //Last BTC price 10^5 $
+    uint private currentPriceBitcoin = 0;
 
     //request ids for BTC price
-    mapping(bytes32 => bool) validIds;
+    mapping(bytes32 => bool) private validIds;
+
+    //Push event log
+    event log(string msg);
+
+    //Push event Bitcoin Price
+    event newBitcoinPrice(uint price);
+
+    //Push event Bitcoin Price Less than last price
+    event newBitcoinPriceLess(uint price);
+
+    //Push event Bitcoin Price Equals than last price
+    event newBitcoinPriceEquals(uint price);
+
+    //Push event Bitcoin Price More than last price
+    event newBitcoinPriceMore(uint price);
+
+    //Push event log Oraclize request
+    event newOraclizeQuery(string msg);
+
+    //test
+    event newBTCPrice(string msg, uint cost);
 
     //Fallback Function
     //A contract can have exactly one unnamed function.
     //This function cannot have arguments and cannot return anything.
     //It is executed on a call to the contract if none of the other functions match the given function identifier (or if no data was supplied at all).
-    function() payable {
-        newOraclizeQuery("new balance");
+    function() public payable {
+        log("new balance");
     }
-
-    //Push event Bitcoin Price
-    event newBitcoinPrice(uint price);
-
-    //Push event log Oraclize request
-    event newOraclizeQuery(string msg);
-
-    //Push event log
-    event log(string msg);
-
-    ////Push event Bitcoin Price
-    event newBTCPrice(string msg, string email);
 
     //Create Smart contract and Scheduler for update BTC Price
     function BitcoinRate() {
@@ -52,27 +61,28 @@ contract BitcoinRate is Owner, usingOraclize {
     }
 
     //Get Balance for Smart contract, every request into Oraclize use gas
-    function getBalance() public view returns (uint){
+    function getBalance() public constant returns (uint){
         return this.balance;
     }
 
     //Get last Bitcoin Price
-    function getBTC() public view returns (uint){
+    function getBTC() public constant returns (uint){
         return currentPriceBitcoin;
     }
 
-    //todo delete it
-    function getAllSubscribers() public {
+    //TODO delete it
+    function getAllSubscribers() payable public {////constant
         //newBTCPrice("test1", "test2");
-        for (uint i = 0; i <= subscribers.length; i++) {
-            newOraclizeQuery(subscribers[i]);
-            //newBTCPrice(subscribers[i], currentPriceBitcoin);
-
+        newOraclizeQuery('getAllSubscribers');
+        log('getAllSubscribers');
+        log(strConcat('getAllSubscribers size:', uint2str(subscribers.length)));
+        for (uint i = 0; i < subscribers.length; i++) {
+            newBTCPrice(subscribers[i], currentPriceBitcoin);
         }
     }
 
-    //send request for BTC price with week deley
-    //todo set private
+    //send request for BTC price with week delay
+    //todo add modificator onlyOwner
     function updatePrice() public payable {
         //
         if (oraclize_getPrice("URL") > this.balance) {
@@ -98,19 +108,20 @@ contract BitcoinRate is Owner, usingOraclize {
         uint newPrice = parseInt(result, 5);
         //BTC price * 10 000
         if (newPrice > currentPriceBitcoin) {
-            //
-            newBitcoinPrice(newPrice);
+            //Push event Bitcoin Price More than last price
+            newBitcoinPriceMore(newPrice);
         } else if (newPrice < currentPriceBitcoin) {
-            //
-            newBitcoinPrice(newPrice);
+            //Push event Bitcoin Price Less than last price
+            newBitcoinPriceLess(newPrice);
         } else {
-            //
-            newBitcoinPrice(newPrice);
+            //Push event Bitcoin Price Equals than last price
+            newBitcoinPriceEquals(newPrice);
         }
+        newBitcoinPrice(newPrice);
         currentPriceBitcoin = newPrice;
         //delete valid request id
         delete validIds[myid];
-        //updatePrice();
+        updatePrice();
     }
 
     //Destroy Smart contract
