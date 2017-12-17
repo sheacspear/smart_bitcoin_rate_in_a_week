@@ -1,5 +1,8 @@
 # Smart Contract Bitcoin Rate in a Week
 
+Allows you to get the actual price of bitcoin once a week.
+The receipt of the price is ensured by the sending of the postal letter.
+To subscribe, you must drop any amount of money into the subscription subscription.
 
 ## Installation
 
@@ -14,11 +17,19 @@
 2. Deploy contract
     ```javascript
     migrate.sh
-    
-3. Run App
+ 
+Default contract deployed into test net Robsten
+
+## Run
+
+1. Run App
      ```javascript
      run.bat
-  
-4. Test contract 
+
+## Test
+
+1. Test contract 
       ```javascript
        test.sh
+
+

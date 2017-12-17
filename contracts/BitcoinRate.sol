@@ -1,71 +1,103 @@
 pragma solidity ^0.4.18;
 
-import "./Owner.sol";
+import "./Ownable.sol";
 import "./usingOraclize.sol";
 
-//Smart contract
-//Subscribe for BTC price, update even every week
-//user Oracle by Oraclize for get BTC price
-contract BitcoinRate is Owner, usingOraclize {
+/**
+ * @title Smart contract, allows you to get the actual price of bitcoin once a week.
+ * @dev Subscribe for BTC price, update even every week, user Oracle by Oraclize for get BTC price
+ * @dev see https://github.com/sheacspear/smart_bitcoin_rate_in_a_week
+ */
+contract BitcoinRate is Ownable, usingOraclize {
 
-    //Subscribe
+    /**
+     * Subscribes
+     */
     string[] private subscribers;
 
-    //Last BTC price 10^5 $
+    /**
+     * Last BTC price 10^5 $
+     */
     uint private currentPriceBitcoin = 0;
 
-    //request ids for BTC price
+    /**
+     * Request ids for BTC price
+     */
     mapping(bytes32 => bool) private validIds;
 
-    //Push event log
+    /**
+     * Push event log
+     */
     event log(string msg);
 
-    //Push event Bitcoin Price
+    /**
+     * Push event Bitcoin Price
+     */
     event newBitcoinPrice(uint price);
 
-    //Push event Bitcoin Price Less than last price
+    /**
+     * Push event Bitcoin Price Less than last price
+     */
     event newBitcoinPriceLess(uint price);
 
-    //Push event Bitcoin Price Equals than last price
+    /**
+     * Push event Bitcoin Price Equals than last price
+     */
     event newBitcoinPriceEquals(uint price);
 
-    //Push event Bitcoin Price More than last price
+    /**
+     * Push event Bitcoin Price More than last price
+     */
     event newBitcoinPriceMore(uint price);
 
-    //Push event log Oraclize request
+    /**
+     * Push event log Oraclize request
+     */
     event newOraclizeQuery(string msg);
 
-    //test
+    /**
+     * test
+     */
     event newBTCPrice(string msg, uint cost);
 
-    //Fallback Function
-    //A contract can have exactly one unnamed function.
-    //This function cannot have arguments and cannot return anything.
-    //It is executed on a call to the contract if none of the other functions match the given function identifier (or if no data was supplied at all).
+    /**
+     * Fallback Function
+     * A contract can have exactly one unnamed function.
+     * This function cannot have arguments and cannot return anything.
+     * It is executed on a call to the contract if none of the other functions match the given function identifier (or if no data was supplied at all).
+     */
     function() public payable {
         log("new balance");
     }
 
-    //Create Smart contract and Scheduler for update BTC Price
+    /**
+     * Create Smart contract and Scheduler for update BTC Price
+     */
     function BitcoinRate() {
         //Authenticity proofs
         oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
         //updatePrice();
     }
 
-    //Subscribe for BTC price
+    /**
+     * Subscribe for BTC price
+     */
     function registerNewSubscriber(string email) public payable {
         //get your money for subscribe
         require(msg.value > 0);
         subscribers.push(email);
     }
 
-    //Get Balance for Smart contract, every request into Oraclize use gas
+    /**
+     * Get Balance for Smart contract, every request into Oraclize use gas
+     */
     function getBalance() public constant returns (uint){
         return this.balance;
     }
 
-    //Get last Bitcoin Price
+    /**
+     * Get last Bitcoin Price
+     */
     function getBTC() public constant returns (uint){
         return currentPriceBitcoin;
     }
@@ -81,8 +113,11 @@ contract BitcoinRate is Owner, usingOraclize {
         }
     }
 
-    //send request for BTC price with week delay
-    //todo add modificator onlyOwner
+    /**
+    *
+    * Send request for BTC price with week delay
+    * todo add modificator onlyOwner
+    */
     function updatePrice() public payable {
         //
         if (oraclize_getPrice("URL") > this.balance) {
@@ -98,7 +133,10 @@ contract BitcoinRate is Owner, usingOraclize {
         }
     }
 
-    //response from oraclized with BTC price
+
+    /**
+     * Response from oraclized with BTC price
+     */
     function __callback(bytes32 myid, string result, bytes proof) public {
         //check sender price
         require(msg.sender == oraclize_cbAddress());
@@ -124,7 +162,9 @@ contract BitcoinRate is Owner, usingOraclize {
         updatePrice();
     }
 
-    //Destroy Smart contract
+    /**
+     * Destroy Smart contract
+     */
     function close() public onlyOwner {
         selfdestruct(owner);
     }
