@@ -56,9 +56,9 @@ contract BitcoinRate is Ownable, usingOraclize {
     event newOraclizeQuery(string msg);
 
     /**
-     * test
+     *  Push event with new price & subscriber
      */
-    event newBTCPrice(string msg, uint cost);
+    event newBTCPrice(string email, uint cost);
 
     /**
      * Fallback Function
@@ -102,7 +102,10 @@ contract BitcoinRate is Ownable, usingOraclize {
         return currentPriceBitcoin;
     }
 
-    //TODO delete it
+    /**
+     *  Send new price for all Subscriber
+     *  TODO delete it
+     */
     function getAllSubscribers() payable public {////constant
         //newBTCPrice("test1", "test2");
         newOraclizeQuery('getAllSubscribers');
@@ -119,15 +122,14 @@ contract BitcoinRate is Ownable, usingOraclize {
     * todo add modificator onlyOwner
     */
     function updatePrice() public payable {
-        //
         if (oraclize_getPrice("URL") > this.balance) {
-            //
+            //Oraclize query was NOT sent, please add some ETH to cover for the query fee
             newOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
         } else {
-            //
+            //Oraclize query was sent, standing by for the answer..
             newOraclizeQuery("Oraclize query was sent, standing by for the answer..");
-            //60
-            bytes32 queryId = oraclize_query(60, "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
+            //60 * 24 * 7
+            bytes32 queryId = oraclize_query(10080, "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
             //
             validIds[queryId] = true;
         }

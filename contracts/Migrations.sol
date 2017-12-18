@@ -1,5 +1,10 @@
 pragma solidity ^0.4.2;
 
+/**
+ * Truffle requires you to have a Migrations contract in order to use the Migrations feature.
+ * This contract must contain a specific interface, but you're free to edit this contract at will.
+ * For most projects, this contract will be deployed initially as the first migration and won't be updated again.
+ */
 contract Migrations {
     address public owner;
     uint public last_completed_migration;
