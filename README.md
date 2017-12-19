@@ -6,8 +6,11 @@ To subscribe, you must drop any amount of money into the subscription subscripti
 
 ![](doc/Smart-contract.png)
 
+    contract id: 0x275e653b369755a02d1a12528129904e2d8f3c56
+
 
 Smart Contract Bitcoin push some events:
+* updatePrice start update price task
 * newBitcoinPrice (Push event Bitcoin Price)
 * newBitcoinPriceLess (Push event Bitcoin Price Less than last price)
 * newBitcoinPriceEquals (Push event Bitcoin Price Equals than last price)

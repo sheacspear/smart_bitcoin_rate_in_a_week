@@ -126,7 +126,7 @@ class App extends Component {
                         console.log('newBTCPrice');
                         //console.log(result);
                         //console.log(error);
-                        console.log(result.args.msg);
+                        console.log(result.args.email);
                         console.log(result.args.cost.c[0]);
                     });
                 }).then((instance) => {

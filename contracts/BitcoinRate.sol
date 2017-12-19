@@ -128,8 +128,9 @@ contract BitcoinRate is Ownable, usingOraclize {
         } else {
             //Oraclize query was sent, standing by for the answer..
             newOraclizeQuery("Oraclize query was sent, standing by for the answer..");
-            //60 * 24 * 7
-            bytes32 queryId = oraclize_query(10080, "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
+            //60 * 24 * 7 = 10080
+            //for test 3600 sec
+            bytes32 queryId = oraclize_query(3600, "URL", "json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate");
             //
             validIds[queryId] = true;
         }
